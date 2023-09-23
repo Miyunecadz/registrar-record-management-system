@@ -16,7 +16,7 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected array $guarded = [];
+    protected $guarded = [];
 
     public function getJWTIdentifier()
     {
