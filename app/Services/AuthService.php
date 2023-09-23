@@ -26,6 +26,12 @@ class AuthService
             return false;
         }
 
-        return Auth::login($user);
+        $auth = auth();
+
+        if($user->role->name == RoleEnum::STUDENT->value) {
+           $auth = $auth->guard('api');
+        }
+
+        return $auth->login($user);
     }
 }
