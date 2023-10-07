@@ -17,6 +17,8 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unable to login, invalid credentials provided.'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return response()->json(['token' => $token]);
+        $user = auth()->guard('api')->user()->load(['role','student']);
+
+        return response()->json(['token' => $token, 'user' => $user]);
     }
 }

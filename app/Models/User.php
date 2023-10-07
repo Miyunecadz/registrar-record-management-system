@@ -33,11 +33,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Role::class);
     }
 
-    public function information()
+    public function student()
     {
-        return match ($this->role->name) {
-            RoleEnum::STUDENT => $this->hasOne(Student::class),
-            default => $this->hasOne(Employee::class)
-        };
+        return $this->hasOne(Student::class);
+    }
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
     }
 }
