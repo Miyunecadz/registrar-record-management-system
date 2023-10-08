@@ -10,23 +10,36 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected array $guarded = [];
+    protected $guarded = [];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
-    public function information()
+    public function student()
     {
-        return match ($this->role->name) {
-            RoleEnum::STUDENT => $this->hasOne(Student::class),
-            default => $this->hasOne(Employee::class)
-        };
+        return $this->hasOne(Student::class);
+    }
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
     }
 }

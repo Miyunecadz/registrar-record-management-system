@@ -52,6 +52,7 @@
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="pages" class="menu-link">
+
                         <div class="text-truncate" data-i18n="Sub Nav 1">Sub Nav 1</div>
                     </a>
                 </li>

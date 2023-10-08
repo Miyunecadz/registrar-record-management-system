@@ -8,7 +8,7 @@ enum RoleEnum: string
     case REGISTRAR = 'registrar';
     case STUDENT = 'student';
 
-    public function getDisplayName($this)
+    public function getDisplayName()
     {
         return match ($this) {
             self::ADMIN => 'Admin',
@@ -18,7 +18,7 @@ enum RoleEnum: string
         };
     }
 
-    public function getDescription($this)
+    public function getDescription()
     {
         return match ($this) {
             self::ADMIN => 'Administrator of the system',
