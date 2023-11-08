@@ -24,7 +24,7 @@ class StudentFactory extends Factory
 
         return [
             'user_id' => User::inRandomOrder()
-                ->whereHas('role', fn ($query) => $query->where('name', RoleEnum::STUDENT))->first()->id,
+                ->whereHas('role', fn ($query) => $query->where('name', RoleEnum::STUDENT))->first()?->id,
             'student_number' => rand(1111111, 9999999)."-$gender",
             'first_name' => $this->faker->firstName,
             'middle_name' => $this->faker->lastName,

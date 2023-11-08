@@ -2,11 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Notifications\DbNotification;
 use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Notifications\DbNotification;
+use App\Classes\Templates\AccountApproved;
 
 class DbNotificationTest extends TestCase
 {
@@ -62,6 +61,25 @@ class DbNotificationTest extends TestCase
         $user->unreadNotifications->where('id', $notification->id)->markAsRead();
 
         $notificationInfo['read_at'] = now();
+        $this->assertDatabaseHas('notifications', $notificationInfo);
+    }
+
+    /** @test */
+    public function canSendAccountApprovedNotification()
+    {
+        $user = User::factory()->create();
+
+        $accountApprovedTemplate = (new AccountApproved())->toArray();
+
+        $user->notify(new DbNotification($accountApprovedTemplate));
+
+        $notificationInfo = [
+            'type' => 'App\Notifications\DbNotification',
+            'notifiable_type' => 'App\Models\User',
+            'notifiable_id' => $user->id,
+            'data' => json_encode($accountApprovedTemplate)
+        ];
+
         $this->assertDatabaseHas('notifications', $notificationInfo);
     }
 }

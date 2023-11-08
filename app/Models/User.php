@@ -55,4 +55,16 @@ class User extends Authenticatable implements JWTSubject
             default => config('vonage.sms_from'),
         };
     }
+
+    public function getFullName()
+    {
+        $information = $this->load(['role', 'student', 'employee']);
+
+        return match($information->role->name) {
+            RoleEnum::ADMIN->value => $information->employee->fullName(),
+            RoleEnum::REGISTRAR->value => $information->employee->fullName(),
+            RoleEnum::STUDENT->value => $information->student->fullName(),
+            default => config('vonage.sms_from'),
+        };
+    }
 }
